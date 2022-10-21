@@ -3,28 +3,30 @@
 Információk [itt](https://viauac00.github.io/laborok/hf)
 
 ## Mobil- és webes szoftverek
-### [Dátum]
-### [Alkalmazás neve]
-### [Teljes név] - ([Neptun kód])
-### [e-mail cím] 
-### Laborvezető: [Laborvezető neve]
+### 2022.10.16
+### Chat
+### Vörös Asztrik - (WYZJ90)
+### asztrik35@gmail.com
+### Laborvezető: Pásztor Dániel
 
 ## Bemutatás
 
-Az alkalmazás rövid, 2-3 mondatos bemutatása. Honnan az ötlet, mi szülte az igényt, ki lehetne a célközönség.
-A laboron és előadáson bemutatott alkalmazásokat nem lehet házi feladatnak választani.
+Az alkalmazás egy minimalista chat funkciót fog megvalósítani, bejelentkezéssel, regisztrációval, felhasználó hozzáadással, üzenetküldéssel 2 személy között. Azért ezt választottam, mert kíváncsi voltam mennyire nehéz megvalósítani egy működőképes chat alkalmazást a tárgy ismereteivel.
 
 ## Főbb funkciók
 
-Az alkalmazás minden funkciójára kiterjedő leírás (röviden, lényegre törően). Legyen egyértelműen eldönthető, hogy az adott funkció implementálva van-e!
-Pl.: Az alkalmazással lehetőség van tételek felvételére és tárolására, valamint azok rendezett megjelenítésére, illetve frissítésre X hálózati hívás segítségével.
+- Lehetőség van regisztrálni egyedi felhasználónévvel, illetve teljes névvel, jelszóval.
+- Lehetőség van bejelentkezni felhasználónév-jelszó párossal, a bejelentkezés nem csak az adott sessionre vonatkozik.
+- Lehetőség van a chat partnereinket áttekinteni: teljes név, legutolsó üzenet preview, legutolsó üzenet dátuma, teljes név 2 betűs monogramját megjelenítő profilkép.
+- Lehetőség van új chat partner felvételére a helyes felhasználónév megadásával.
+- Lehetőség van kijelentkezni.
+- Lehetőség van a chat partnerrel chatelni közel real time.
 
 ## Választott technológiák:
 
-- (UI)
-- (fragmentek)
-- (RecyclerView)
-- (Perzisztens adattárolás)
-
+- UI
+- Fragmentek
+- RecyclerView
+- Hálózati kommunikáció
 
 # Házi feladat dokumentáció (ha nincs, ez a fejezet törölhető)
