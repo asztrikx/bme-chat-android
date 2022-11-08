@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Chat</string>
+
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="signinFailed">Username or password didn\'t match</string>
+    <string name="missingField">Field can\'t be empty</string>
+    <string name="passwordAgain">Password again</string>
+    <string name="fullName">Full name</string>
+    <string name="register">Register</string>
+    <string name="passwordsMismatch">The two passwords don\'t match</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="errorDuringConnection">Data exchange failed.</string>
+    <string name="successfulRegistration">Successful registration, please login!</string>
+
+</resources>
