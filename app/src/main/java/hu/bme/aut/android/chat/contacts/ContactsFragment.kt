@@ -29,12 +29,6 @@ class ContactsFragment : Fragment() {
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
-		SessionProvider.listeners.add {
-			if (SessionProvider.session == null) {
-				findNavController().navigate(R.id.action_global_welcomeFragment)
-			}
-		}
-
 		binding = FragmentContactsBinding.inflate(inflater, container, false)
 		return binding.root
 	}

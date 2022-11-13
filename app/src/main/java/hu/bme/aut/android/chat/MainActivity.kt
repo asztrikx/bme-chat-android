@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat.connection.SessionProvider
 import hu.bme.aut.android.chat.databinding.ActivityMainBinding
 
@@ -19,6 +22,16 @@ class MainActivity : AppCompatActivity() {
         SessionProvider.injectPreferences(getPreferences(MODE_PRIVATE))
         SessionProvider.listeners.add {
             invalidateMenu()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        SessionProvider.listeners.add {
+            if (SessionProvider.session == null) {
+                binding.hostFragment.findNavController().navigate(R.id.action_global_welcomeFragment)
+            }
         }
     }
 

@@ -43,8 +43,6 @@ class LoginFragment : Fragment() {
 		}
 	}
 
-
-
 	private suspend fun login() {
 		val username = binding.editTextUsername.validateEmpty(::getString)?.text?.toString()
 		val password = binding.editTextPassword.validateEmpty(::getString)?.text?.toString()
