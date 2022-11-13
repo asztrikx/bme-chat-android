@@ -17,6 +17,6 @@ interface UserApi {
 	@GET("${NetworkManager.API_PATH}/contact")
 	suspend fun contacts(): List<ContactBrief>?
 
-	@GET("${NetworkManager.API_PATH}/message/{id}")
-	suspend fun messages(@Path("id") id: String): List<Message>?
+	@GET("${NetworkManager.API_PATH}/message/{contactId}")
+	suspend fun messages(@Path("contactId") id: Int): List<Message>?
 }

@@ -2,6 +2,7 @@ package hu.bme.aut.android.chat.contacts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat.connection.NetworkManager
@@ -32,21 +33,26 @@ class ContactsAdapter(val onClickListener: (Int) -> Unit): RecyclerView.Adapter<
 		holder.binding.fullName.text = contact.name
 		holder.binding.lastMessageText.text = contact.lastMessageContent
 		holder.binding.root.setOnClickListener {
-			onClickListener(contact.userId)
+			onClickListener(contact.id)
+		}
+		holder.binding.lastMessageDate.text = getLastMessageDateText(contact.lastMessageDate)
+	}
+
+	private fun getLastMessageDateText(lastMessageDate: String): String {
+		if (lastMessageDate == "") {
+			return ""
 		}
 
-		if (contact.lastMessageDate != "") {
-			val date = LocalDateTime.parse(
-				contact.lastMessageDate,
-				DateTimeFormatter.ofPattern("yy/MM/dd HH:mm")
-			)
-			val dateFormatPattern = if (Duration.between(date, LocalDateTime.now()).toDays() >= 1) {
-				"yy/MM/dd"
-			} else {
-				"HH:mm"
-			}
-			holder.binding.lastMessageDate.text = date.format(DateTimeFormatter.ofPattern(dateFormatPattern))
+		val date = LocalDateTime.parse(
+			lastMessageDate,
+			DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
+		)
+		val dateFormatPattern = if (Duration.between(date, LocalDateTime.now()).toDays() >= 1) {
+			"yy/MM/dd"
+		} else {
+			"HH:mm"
 		}
+		return date.format(DateTimeFormatter.ofPattern(dateFormatPattern))
 	}
 
 	override fun getItemCount(): Int = contactBriefs.size

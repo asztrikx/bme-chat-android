@@ -8,15 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.android.chat.connection.User
+import hu.bme.aut.android.chat.connection.NetworkManager
+import hu.bme.aut.android.chat.connection.handleNetworkError
 import hu.bme.aut.android.chat.databinding.FragmentMessagesBinding
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class MessagesFragment : Fragment() {
 	private lateinit var binding: FragmentMessagesBinding
-
+	private var contactId by Delegates.notNull<Int>()
 	companion object {
-		var user = null as User
+		const val CONTACT_ID = "contactId"
+	}
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		arguments?.let {
+			contactId = it.getInt(CONTACT_ID)
+		}
 	}
 
 	override fun onCreateView(
@@ -31,9 +42,9 @@ class MessagesFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val adapter = MessagesAdapter(requireContext(), user)
+		val adapter = MessagesAdapter(requireContext())
 		binding.messages.layoutManager = LinearLayoutManager(binding.root.context).apply {
-			reverseLayout = true
+			stackFromEnd = true
 		}
 		binding.messages.adapter = adapter
 		binding.messages.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -50,5 +61,14 @@ class MessagesFragment : Fragment() {
 				outRect.right = 20
 			}
 		})
+
+		CoroutineScope(Dispatchers.Main).launch {
+			try {
+				adapter.messages = NetworkManager.messages(contactId)
+				adapter.notifyDataSetChanged()
+			} catch (e: Exception) {
+				handleNetworkError(binding.root, ::getString)
+			}
+		}
 	}
 }

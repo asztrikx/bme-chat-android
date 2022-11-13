@@ -2,24 +2,22 @@ package hu.bme.aut.android.chat.contacts
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat.R
 import hu.bme.aut.android.chat.databinding.FragmentContactsBinding
 import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.SessionProvider
 import hu.bme.aut.android.chat.connection.handleNetworkError
 import hu.bme.aut.android.chat.messages.MessagesFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class ContactsFragment : Fragment() {
 	private lateinit var binding: FragmentContactsBinding
@@ -36,7 +34,7 @@ class ContactsFragment : Fragment() {
 	override fun onResume() {
 		super.onResume()
 
-		val adapter = ContactsAdapter(::openContact)
+		val adapter = ContactsAdapter(::openMessages)
 		binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
 		binding.recyclerView.adapter = adapter
 		binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -64,8 +62,8 @@ class ContactsFragment : Fragment() {
 		}
 	}
 
-	private fun openContact(userId: Int) {
-		//MessagesFragment.user = it
-		findNavController().navigate(R.id.action_contactsFragment_to_messagesFragment)
+	private fun openMessages(contactId: Int) {
+		val bundle = bundleOf(MessagesFragment.CONTACT_ID to contactId)
+		findNavController().navigate(R.id.action_contactsFragment_to_messagesFragment, bundle)
 	}
 }

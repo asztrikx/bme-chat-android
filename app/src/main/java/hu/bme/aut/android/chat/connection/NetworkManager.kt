@@ -2,6 +2,7 @@ package hu.bme.aut.android.chat.connection
 
 import java.util.Base64
 import hu.bme.aut.android.chat.contacts.ContactBrief
+import hu.bme.aut.android.chat.messages.Message
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import okhttp3.*
@@ -23,7 +24,6 @@ object NetworkManager {
 	init {
 		val client = OkHttpClient.Builder()
 			.addInterceptor(AuthInterceptor())
-			//.addInterceptor(MockInterceptor())
 			.callTimeout(Duration.ofDays(1)) // TODO
 			.build()
 
@@ -52,40 +52,7 @@ object NetworkManager {
 			return chain.proceed(request)
 		}
 	}
-/*
-	class MockInterceptor : Interceptor {
-		override fun intercept(chain: Interceptor.Chain): Response {
-			val section = chain.request().url().pathSegments()[2]
-			val function = chain.request().url().pathSegments()[3]
-			return when {
-				section == "user" -> when {
-					function == "login" -> login()
-					else -> throw RuntimeException()
-				}
-				else -> throw RuntimeException()
-			}
-		}
 
-		private fun login(): Response {
-			return responseFromJsonText("""
-				{
-					"session": {
-						"user": {
-							"id": ""
-							"username": "",
-							"fullName": ""
-						},
-						"token": "mock-token"
-					}
-				}
-			""".trimIndent());
-		}
-
-		private fun responseFromJsonText(text: String): Response {
-			return Request.Builder().post(RequestBody.create(MediaType.get("application/json"), "")).build() as Response
-		}
-	}
-*/
 	@Throws(Exception::class)
 	suspend fun login(username: String, password: String): Boolean {
 		val response = withContext(IO) {
@@ -113,13 +80,11 @@ object NetworkManager {
 		return response.toMutableList()
 	}
 
-/*
-	fun messages(userId: String): MutableList<Message>? {
-		try {
-			val response = userApi.messages(userId)?.execute() ?: return null
-			return response.body()?.toMutableList()
-		} catch (e: IOException) {
-			return null
-		}
-	}*/
+	@Throws(Exception::class)
+	suspend fun messages(contactId: Int): MutableList<Message> {
+		val response = withContext(IO) {
+			userApi.messages(contactId)
+		} ?: throw IOException()
+		return response.toMutableList()
+	}
 }
