@@ -20,19 +20,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         SessionProvider.injectPreferences(getPreferences(MODE_PRIVATE))
-        SessionProvider.listeners.add {
-            invalidateMenu()
+        SessionProvider.listeners.add(::onSessionChange)
+    }
+
+    private fun onSessionChange() {
+        invalidateMenu()
+        if (SessionProvider.session == null) {
+            binding.hostFragment.findNavController().navigate(R.id.action_global_welcomeFragment)
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        SessionProvider.listeners.add {
-            if (SessionProvider.session == null) {
-                binding.hostFragment.findNavController().navigate(R.id.action_global_welcomeFragment)
-            }
-        }
+    override fun onStop() {
+        super.onStop()
+        SessionProvider.listeners.remove(::onSessionChange)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
