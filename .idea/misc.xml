@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.356" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/shape_message.xml" value="0.22" />
         <entry key="app/src/main/res/drawable/shape_message_you.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/shape_profile_picture.xml" value="0.355" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
