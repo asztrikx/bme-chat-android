@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat.connection
+package hu.bme.aut.android.chat.network.rest
 
 import java.util.Base64
 import hu.bme.aut.android.chat.contacts.ContactBrief

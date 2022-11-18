@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.handleNetworkError
+import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.FragmentRegisterBinding
 import hu.bme.aut.android.chat.validator.allValid
 import hu.bme.aut.android.chat.validator.validateEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class RegisterFragment : Fragment() {
 	private lateinit var binding: FragmentRegisterBinding

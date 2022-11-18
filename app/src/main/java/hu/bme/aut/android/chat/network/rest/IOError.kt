@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat.connection
+package hu.bme.aut.android.chat.network.rest
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar

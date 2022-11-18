@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.handleNetworkError
+import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.FragmentLoginBinding
 import hu.bme.aut.android.chat.validator.allValid
 import hu.bme.aut.android.chat.validator.validateEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class LoginFragment : Fragment() {
 	private lateinit var binding: FragmentLoginBinding

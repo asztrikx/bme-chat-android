@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.handleNetworkError
+import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.FragmentMessagesBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat.R
 import hu.bme.aut.android.chat.databinding.FragmentContactsBinding
 import androidx.navigation.fragment.findNavController
-import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.handleNetworkError
+import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.messages.MessagesFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
