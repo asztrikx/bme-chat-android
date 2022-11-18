@@ -2,19 +2,9 @@ package hu.bme.aut.android.chat.contacts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.User
-import hu.bme.aut.android.chat.connection.handleNetworkError
 import hu.bme.aut.android.chat.databinding.ItemContactBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.IOException
 import java.time.Duration
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

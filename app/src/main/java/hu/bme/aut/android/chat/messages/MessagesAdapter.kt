@@ -1,14 +1,13 @@
 package hu.bme.aut.android.chat.messages
 
 import android.content.Context
-import android.util.LayoutDirection
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.connection.SessionProvider
+import hu.bme.aut.android.chat.session.SessionProvider
 import hu.bme.aut.android.chat.databinding.ItemMessageBinding
 import java.lang.RuntimeException
 

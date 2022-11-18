@@ -5,10 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.connection.SessionProvider
+import hu.bme.aut.android.chat.session.SessionProvider
 import hu.bme.aut.android.chat.databinding.FragmentWelcomeBinding
 
 class WelcomeFragment : Fragment() {

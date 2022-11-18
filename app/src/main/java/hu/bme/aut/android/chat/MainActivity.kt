@@ -1,14 +1,11 @@
 package hu.bme.aut.android.chat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import hu.bme.aut.android.chat.connection.SessionProvider
+import hu.bme.aut.android.chat.session.SessionProvider
 import hu.bme.aut.android.chat.contacts.AddContactDialog
 import hu.bme.aut.android.chat.databinding.ActivityMainBinding
 
@@ -52,9 +49,14 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_action_addcontact -> {
+                showAddContact()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showAddContact() {
+        AddContactDialog({}, binding.root, ::getString).show(supportFragmentManager, AddContactDialog.TAG)
     }
 }

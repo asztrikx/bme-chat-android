@@ -3,7 +3,10 @@ package hu.bme.aut.android.chat.connection
 import java.util.Base64
 import hu.bme.aut.android.chat.contacts.ContactBrief
 import hu.bme.aut.android.chat.contacts.ContactPostResponse
+import hu.bme.aut.android.chat.login.LoginRequest
 import hu.bme.aut.android.chat.messages.Message
+import hu.bme.aut.android.chat.register.RegisterRequest
+import hu.bme.aut.android.chat.session.SessionProvider
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import okhttp3.*

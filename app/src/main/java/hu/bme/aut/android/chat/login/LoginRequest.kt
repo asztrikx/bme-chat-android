@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat.connection
+package hu.bme.aut.android.chat.login
 
 data class LoginRequest(
 	val username: String,

@@ -60,7 +60,7 @@ class AddContactDialog(
 				val text = error ?: "User added to contacts" // TODO use strings.xml even for errors
 				Snackbar.make(parentView, text, Snackbar.LENGTH_SHORT).show()
 
-				if (error != null) {
+				if (error == null) {
 					onAdd(contactBrief!!)
 				}
 			} catch (e: Exception) {

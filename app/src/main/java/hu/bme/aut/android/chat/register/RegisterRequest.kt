@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat.connection
+package hu.bme.aut.android.chat.register
 
 data class RegisterRequest (
 	val username: String,

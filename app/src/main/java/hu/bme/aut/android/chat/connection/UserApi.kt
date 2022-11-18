@@ -2,7 +2,11 @@ package hu.bme.aut.android.chat.connection
 
 import hu.bme.aut.android.chat.contacts.ContactBrief
 import hu.bme.aut.android.chat.contacts.ContactPostResponse
+import hu.bme.aut.android.chat.login.LoginRequest
 import hu.bme.aut.android.chat.messages.Message
+import hu.bme.aut.android.chat.register.RegisterRequest
+import hu.bme.aut.android.chat.register.RegisterResponse
+import hu.bme.aut.android.chat.session.Session
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

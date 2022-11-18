@@ -1,8 +1,6 @@
-package hu.bme.aut.android.chat.connection
+package hu.bme.aut.android.chat.session
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import kotlin.properties.Delegates
 
 object SessionProvider {
@@ -13,7 +11,7 @@ object SessionProvider {
 	var listeners: MutableList<() -> Unit> = mutableListOf()
 
 	init {
-		listeners.add(::saveSession)
+		listeners.add(SessionProvider::saveSession)
 	}
 
 	var session: Session? by Delegates.observable(
@@ -29,7 +27,7 @@ object SessionProvider {
 	}
 
 	fun injectPreferences(preferences: SharedPreferences) {
-		this.preferences = preferences
+		SessionProvider.preferences = preferences
 		loadSession()
 	}
 

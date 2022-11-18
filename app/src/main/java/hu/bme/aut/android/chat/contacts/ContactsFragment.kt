@@ -5,15 +5,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.os.bundleOf
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat.R
 import hu.bme.aut.android.chat.databinding.FragmentContactsBinding
 import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat.connection.NetworkManager
-import hu.bme.aut.android.chat.connection.SessionProvider
 import hu.bme.aut.android.chat.connection.handleNetworkError
 import hu.bme.aut.android.chat.messages.MessagesFragment
 import kotlinx.coroutines.CoroutineScope
@@ -57,16 +54,6 @@ class ContactsFragment : Fragment() {
 		})
 
 		reloadContacts()
-	}
-
-	private fun showAddContact() {
-		AddContactDialog({
-				adapter.contactBriefs.add(it)
-				adapter.notifyItemInserted(adapter.itemCount - 1)
-			},
-			binding.root, ::getString
-		)
-			.show(parentFragmentManager, AddContactDialog.TAG)
 	}
 
 	private fun reloadContacts() {
