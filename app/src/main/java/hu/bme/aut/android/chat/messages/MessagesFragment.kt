@@ -56,9 +56,9 @@ class MessagesFragment : Fragment() {
 			) {
 				super.getItemOffsets(outRect, view, parent, state)
 				outRect.top = 17
-				outRect.bottom = 17
-				outRect.left = 20
-				outRect.right = 20
+				outRect.bottom = outRect.top
+				outRect.left = 15
+				outRect.right = outRect.left
 			}
 		})
 

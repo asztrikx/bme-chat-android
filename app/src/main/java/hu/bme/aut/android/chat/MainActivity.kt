@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat.connection.SessionProvider
+import hu.bme.aut.android.chat.contacts.AddContactDialog
 import hu.bme.aut.android.chat.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private fun onSessionChange() {
         invalidateMenu()
         if (SessionProvider.session == null) {
+            // binding.root also works
             binding.hostFragment.findNavController().navigate(R.id.action_global_welcomeFragment)
         }
     }
@@ -45,7 +48,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_action_signout -> {
-                SessionProvider.session = null
+                SessionProvider.logout()
+                true
+            }
+            R.id.menu_action_addcontact -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)

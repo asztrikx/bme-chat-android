@@ -24,6 +24,10 @@ object SessionProvider {
 		},
 	)
 
+	fun logout() {
+		session = null
+	}
+
 	fun injectPreferences(preferences: SharedPreferences) {
 		this.preferences = preferences
 		loadSession()

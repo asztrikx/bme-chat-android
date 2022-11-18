@@ -2,6 +2,7 @@ package hu.bme.aut.android.chat.connection
 
 import java.util.Base64
 import hu.bme.aut.android.chat.contacts.ContactBrief
+import hu.bme.aut.android.chat.contacts.ContactPostResponse
 import hu.bme.aut.android.chat.messages.Message
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -19,6 +20,9 @@ object NetworkManager {
 
 	//private const val SERVICE_URL = "http://152.66.182.135:8080"
 	private const val SERVICE_URL = "http://192.168.1.103:8080"
+	//private const val SERVICE_URL = "http://152.66.157.58:8080"
+	//private const val SERVICE_URL = "http://10.51.111.210:8080"
+	
 	const val API_PATH = "/api"
 
 	init {
@@ -86,5 +90,13 @@ object NetworkManager {
 			userApi.messages(contactId)
 		} ?: throw IOException()
 		return response.toMutableList()
+	}
+
+	@Throws(Exception::class)
+	suspend fun addContact(username: String): ContactPostResponse {
+		val response = withContext(IO) {
+			userApi.addContact(username)
+		} ?: throw IOException()
+		return response
 	}
 }

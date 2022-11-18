@@ -48,8 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="3dp"
         android:src="@android:drawable/ic_menu_send"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/background"
+        app:layout_constraintEnd_toEndOf="@+id/background"
         app:layout_constraintTop_toTopOf="@+id/background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

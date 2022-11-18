@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chat.connection
 
 import hu.bme.aut.android.chat.contacts.ContactBrief
+import hu.bme.aut.android.chat.contacts.ContactPostResponse
 import hu.bme.aut.android.chat.messages.Message
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,4 +20,7 @@ interface UserApi {
 
 	@GET("${NetworkManager.API_PATH}/message/{contactId}")
 	suspend fun messages(@Path("contactId") id: Int): List<Message>?
+
+	@POST("${NetworkManager.API_PATH}/contact")
+	suspend fun addContact(@Body username: String): ContactPostResponse?
 }
