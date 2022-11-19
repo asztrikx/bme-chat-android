@@ -38,20 +38,6 @@ class ContactsFragment : Fragment() {
 
 		binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
 		binding.recyclerView.adapter = adapter
-		binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-			override fun getItemOffsets(
-				outRect: Rect,
-				view: View,
-				parent: RecyclerView,
-				state: RecyclerView.State
-			) {
-				super.getItemOffsets(outRect, view, parent, state)
-				outRect.top = 17
-				outRect.bottom = 17
-				outRect.left = 20
-				outRect.right = 20
-			}
-		})
 
 		reloadContacts()
 	}
