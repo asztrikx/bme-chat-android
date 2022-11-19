@@ -19,7 +19,10 @@ class ContactsAdapter(val onClickListener: (Int) -> Unit): RecyclerView.Adapter<
 	override fun onBindViewHolder(holder: ContactsViewHolder, position: Int) {
 		val contact = contactBriefs[position]
 
-		holder.binding.profileImageText.text = contact.name.split(" ").take(2).joinToString("")
+		holder.binding.profileImageText.text = contact.name
+			.split(" ").take(2)
+			.map{ it[0] }
+			.joinToString("")
 		holder.binding.fullName.text = contact.name
 		holder.binding.lastMessageText.text = contact.lastMessageContent
 		holder.binding.root.setOnClickListener {
