@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import hu.bme.aut.android.chat.contacts.ContactBrief
 import hu.bme.aut.android.chat.messages.Message
+import hu.bme.aut.android.chat.messages.NewMessage
 import hu.bme.aut.android.chat.network.rest.NetworkManager
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -16,13 +17,18 @@ object WebsocketManager: WebSocketListener() {
 	val contactBriefListeners = mutableListOf<(ContactBrief) -> Unit>()
 	val messageListeners = mutableListOf<(Message) -> Unit>()
 	private lateinit var client: OkHttpClient
+	private lateinit var websocket: WebSocket
 
-	fun run(client: OkHttpClient) {
+	fun start(client: OkHttpClient) {
 		this.client = client
-		client.newWebSocket(
+		this.websocket = client.newWebSocket(
 			Request.Builder().url(NetworkManager.SERVICE_URL + "/ws").build(),
 			WebsocketManager,
 		)
+	}
+
+	fun send(newMessage: NewMessage) {
+		websocket.send(gson.toJson(newMessage))
 	}
 
 	override fun onMessage(webSocket: WebSocket, text: String) {
@@ -43,6 +49,6 @@ object WebsocketManager: WebSocketListener() {
 
 	override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
 		webSocket.close(1000, null)
-		run(client)
+		start(client)
 	}
 }

@@ -36,7 +36,7 @@ object NetworkManager {
 			.callTimeout(Duration.ofDays(1)) // TODO
 			.build()
 
-		WebsocketManager.run(client)
+		WebsocketManager.start(client)
 
 		retrofit = Retrofit.Builder()
 			.baseUrl(SERVICE_URL)

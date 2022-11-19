@@ -1,27 +1,28 @@
 package hu.bme.aut.android.chat.messages
 
-import android.graphics.Rect
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import hu.bme.aut.android.chat.databinding.FragmentMessagesBinding
 import hu.bme.aut.android.chat.network.rest.NetworkManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
-import hu.bme.aut.android.chat.databinding.FragmentMessagesBinding
+import hu.bme.aut.android.chat.network.socket.WebsocketManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 class MessagesFragment : Fragment() {
-	private lateinit var binding: FragmentMessagesBinding
-	private var contactId by Delegates.notNull<Int>()
 	companion object {
 		const val CONTACT_ID = "contactId"
 	}
+	private lateinit var binding: FragmentMessagesBinding
+
+	private var contactId by Delegates.notNull<Int>()
+	private lateinit var adapter: MessagesAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -39,29 +40,30 @@ class MessagesFragment : Fragment() {
 		return binding.root
 	}
 
+	override fun onStart() {
+		super.onStart()
+		WebsocketManager.messageListeners.add(::onNewMessage)
+	}
+
+	override fun onStop() {
+		super.onStop()
+		WebsocketManager.messageListeners.remove(::onNewMessage)
+	}
+
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val adapter = MessagesAdapter(requireContext())
+		adapter = MessagesAdapter(requireContext())
 		binding.messages.layoutManager = LinearLayoutManager(binding.root.context).apply {
 			stackFromEnd = true
 		}
 		binding.messages.adapter = adapter
-		binding.messages.addItemDecoration(object : RecyclerView.ItemDecoration() {
-			override fun getItemOffsets(
-				outRect: Rect,
-				view: View,
-				parent: RecyclerView,
-				state: RecyclerView.State
-			) {
-				super.getItemOffsets(outRect, view, parent, state)
-				outRect.top = 17
-				outRect.bottom = outRect.top
-				outRect.left = 15
-				outRect.right = outRect.left
-			}
-		})
+		binding.imageButton.setOnClickListener { sendMessage() }
 
+		reloadMessages()
+	}
+
+	private fun reloadMessages() {
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
 				adapter.messages = NetworkManager.messages(contactId)
@@ -70,5 +72,24 @@ class MessagesFragment : Fragment() {
 				handleNetworkError(binding.root, ::getString)
 			}
 		}
+	}
+
+	private fun onNewMessage(message: Message) {
+		activity?.runOnUiThread {
+			adapter.messages.add(message)
+			adapter.notifyItemInserted(adapter.messages.size - 1)
+			if (binding.messages.computeVerticalScrollRange() - binding.messages.computeVerticalScrollExtent() == binding.messages.computeVerticalScrollOffset()) {
+				binding.messages.smoothScrollToPosition(adapter.messages.size - 1)
+			}
+		}
+	}
+
+	private fun sendMessage() {
+		val messageContent = binding.editTextMessage.text.toString()
+		binding.editTextMessage.setText("")
+		WebsocketManager.send(NewMessage(
+			contactId,
+			messageContent
+		))
 	}
 }
