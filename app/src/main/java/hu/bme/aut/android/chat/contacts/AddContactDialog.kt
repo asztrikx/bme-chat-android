@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddContactDialog(
-	private val onAdd: (ContactBrief) -> Unit,
+	private val onAdd: () -> Unit,
 	private val parentView: View,
 	private val parentGetString: (Int) -> String
 ) : DialogFragment() {
@@ -40,19 +40,19 @@ class AddContactDialog(
 		val username = binding.textUsername.text.toString()
 
 		CoroutineScope(Dispatchers.Main).launch {
-			try {
-				val contactPostResponse = NetworkManager.addContact(username)
-				val error = contactPostResponse.error
-				val contactBrief = contactPostResponse.contactBrief
-
-				val text = error ?: "User added to contacts" // TODO use strings.xml even for errors
-				Snackbar.make(parentView, text, Snackbar.LENGTH_SHORT).show()
-
-				if (error == null) {
-					onAdd(contactBrief!!)
-				}
+			val contactPostResponse = try {
+				NetworkManager.addContact(username)
 			} catch (e: Exception) {
 				handleNetworkError(parentView, parentGetString)
+				return@launch
+			}
+			val error = contactPostResponse.error
+
+			val text = error ?: "User added to contacts" // TODO use strings.xml even for errors
+			Snackbar.make(parentView, text, Snackbar.LENGTH_SHORT).show()
+
+			if (error == null) {
+				onAdd()
 			}
 		}
 	}
