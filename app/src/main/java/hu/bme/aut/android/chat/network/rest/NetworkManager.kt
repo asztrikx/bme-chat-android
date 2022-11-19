@@ -5,6 +5,7 @@ import hu.bme.aut.android.chat.contacts.ContactBrief
 import hu.bme.aut.android.chat.contacts.ContactPostResponse
 import hu.bme.aut.android.chat.login.LoginRequest
 import hu.bme.aut.android.chat.messages.Message
+import hu.bme.aut.android.chat.network.socket.WebsocketManager
 import hu.bme.aut.android.chat.register.RegisterRequest
 import hu.bme.aut.android.chat.session.SessionProvider
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,8 +22,9 @@ object NetworkManager {
 	private val retrofit: Retrofit
 	private val userApi: UserApi
 
+	private const val DOMAIN = "192.168.1.103:8080"
 	//private const val SERVICE_URL = "http://152.66.182.135:8080"
-	private const val SERVICE_URL = "http://192.168.1.103:8080"
+	const val SERVICE_URL = "http://" + DOMAIN
 	//private const val SERVICE_URL = "http://152.66.157.58:8080"
 	//private const val SERVICE_URL = "http://10.51.111.210:8080"
 	
@@ -33,6 +35,8 @@ object NetworkManager {
 			.addInterceptor(AuthInterceptor())
 			.callTimeout(Duration.ofDays(1)) // TODO
 			.build()
+
+		WebsocketManager.run(client)
 
 		retrofit = Retrofit.Builder()
 			.baseUrl(SERVICE_URL)

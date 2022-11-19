@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat.network.rest.NetworkManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.messages.MessagesFragment
+import hu.bme.aut.android.chat.network.socket.WebsocketManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +23,10 @@ class ContactsFragment : Fragment() {
 
 	private val adapter = ContactsAdapter(::openMessages)
 
-	// TODO reverse row
+	override fun onStart() {
+		super.onStart()
+		WebsocketManager.contactBriefListeners.add(::onNewContact)
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -40,6 +44,19 @@ class ContactsFragment : Fragment() {
 		binding.recyclerView.adapter = adapter
 
 		reloadContacts()
+	}
+
+	override fun onStop() {
+		super.onStop()
+
+		WebsocketManager.contactBriefListeners.remove(::onNewContact)
+	}
+
+	private fun onNewContact(contactBrief: ContactBrief) {
+		activity?.runOnUiThread {
+			adapter.contactBriefs.add(contactBrief)
+			adapter.notifyItemInserted(adapter.contactBriefs.size - 1)
+		}
 	}
 
 	private fun reloadContacts() {
