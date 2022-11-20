@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
+import hu.bme.aut.android.chat.R
 import hu.bme.aut.android.chat.network.rest.NetworkManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.DialogAddContactBinding
@@ -26,7 +27,7 @@ class AddContactDialog(
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 		binding = DialogAddContactBinding.inflate(layoutInflater)
 
-		return AlertDialog.Builder(requireContext())
+		return AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
 			.setTitle("Username of new contact")
 			.setView(binding.root)
 			.setPositiveButton("Add") { dialogInterface, i ->
