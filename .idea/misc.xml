@@ -18,13 +18,14 @@
         <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.3414080242240727" />
-        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/fragment_welcome.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_contact.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_message.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_message_you.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu_action.xml" value="0.10833333333333334" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.339" />
         <entry key="app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>
     </option>
