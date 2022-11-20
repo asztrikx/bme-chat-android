@@ -12,7 +12,10 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface UserApi {
+/**
+ * Describes the available endpoints
+ */
+interface Api {
 	@POST("${NetworkManager.API_PATH}/login")
 	suspend fun login(@Body loginRequest: LoginRequest): Session?
 

@@ -18,7 +18,6 @@
         app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="a"
         />
 
     <EditText
@@ -32,7 +31,6 @@
         app:layout_constraintEnd_toEndOf="@+id/editTextUsername"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editTextUsername"
-        android:text="a"
         />
 
     <EditText
@@ -45,7 +43,6 @@
         app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
         app:layout_constraintStart_toStartOf="@+id/editTextPassword"
         app:layout_constraintTop_toBottomOf="@+id/space"
-        android:text="a"
         />
 
     <EditText
@@ -59,7 +56,6 @@
         app:layout_constraintEnd_toEndOf="@+id/editTextPasswordAgain"
         app:layout_constraintStart_toStartOf="@+id/editTextPasswordAgain"
         app:layout_constraintTop_toBottomOf="@+id/editTextPasswordAgain"
-        android:text="a"
         />
 
     <Button

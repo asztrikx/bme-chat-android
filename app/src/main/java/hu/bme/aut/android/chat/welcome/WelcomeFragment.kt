@@ -24,6 +24,7 @@ class WelcomeFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
 		binding.login.setOnClickListener {
 			findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
 		}
@@ -31,6 +32,7 @@ class WelcomeFragment : Fragment() {
 			findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
 		}
 
+		// With session the first screen should be the ContactsFragment, with nothing else on the stack
 		if (SessionProvider.session != null) {
 			findNavController().navigate(R.id.action_welcomeFragment_to_contactsFragment)
 		}

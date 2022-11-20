@@ -3,61 +3,37 @@ package hu.bme.aut.android.chat.session
 import android.content.SharedPreferences
 import kotlin.properties.Delegates
 
+/**
+ * Singleton for session management.
+ * injectPreferences should be called before using it.
+ */
 object SessionProvider {
-	private const val KEY_USERID = "userId"
-	private const val KEY_TOKEN = "token"
-
+	/**
+	 * This should be called before accessing session.
+	 */
 	private lateinit var preferences: SharedPreferences
-	var listeners: MutableList<() -> Unit> = mutableListOf()
-
-	init {
-		listeners.add(SessionProvider::saveSession)
+	fun injectPreferences(preferences: SharedPreferences) {
+		SessionProvider.preferences = preferences
+		PreferenceManager.loadSession(preferences)
 	}
 
+	/**
+	 * In order to listen for changes in the session one must add a callback function to this array.
+	 */
+	var listeners: MutableList<() -> Unit> = mutableListOf({
+		PreferenceManager.saveSession(preferences)
+	})
 	var session: Session? by Delegates.observable(
 		initialValue = null,
 		onChange = { property, oldValue, newValue ->
-			assert(session == newValue)
 			listeners.forEach { it() }
 		},
 	)
 
+	/**
+	 * Removes session.
+	 */
 	fun logout() {
 		session = null
-	}
-
-	fun injectPreferences(preferences: SharedPreferences) {
-		SessionProvider.preferences = preferences
-		loadSession()
-	}
-
-	private fun loadSession() {
-		try {
-			if (preferences.contains(KEY_TOKEN)) {
-				val userId = preferences.getInt(KEY_USERID, -1)
-				val token = preferences.getString(KEY_TOKEN, null)!!
-				session = Session(userId, token)
-			}
-		} catch (e: Exception) {
-			with (preferences.edit()) {
-				remove(KEY_USERID)
-				remove(KEY_TOKEN)
-			}
-			session = null
-		}
-	}
-
-	private fun saveSession() {
-		with (preferences.edit()) {
-			if (session == null) {
-				remove(KEY_USERID)
-				remove(KEY_TOKEN)
-			}
-			session?.let {
-				putInt(KEY_USERID, it.userId)
-				putString(KEY_TOKEN, it.token)
-			}
-			apply()
-		}
 	}
 }

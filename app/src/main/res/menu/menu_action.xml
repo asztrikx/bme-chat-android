@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_action_addcontact"
-        android:title="Add contact" />
+        android:title="@string/menu_add_contact" />
     <item
         android:id="@+id/menu_action_signout"
-        android:title="Sign out" />
+        android:title="@string/menu_sign_out" />
 </menu>

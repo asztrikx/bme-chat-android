@@ -10,9 +10,17 @@
     <string name="fullName">Full name</string>
     <string name="register">Register</string>
     <string name="passwordsMismatch">The two passwords don\'t match</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="errorDuringConnection">Data exchange failed.</string>
     <string name="successfulRegistration">Successful registration, please login!</string>
+    <string name="newContactTitle">Username of new contact</string>
+    <string name="newContactAdd">Add</string>
+    <string name="newContactCancel">Cancel</string>
+    <string name="newContactSuccess">User added to contacts</string>
+    <string name="dateFormat">yy/MM/dd</string>
+    <string name="hourFormat">HH:mm</string>
+    <string name="menu_add_contact">Add contact</string>
+    <string name="menu_sign_out">Sign out</string>
+    <string name="messages_new_message_placeholder">Type your text here...</string>
+    <string name="new_contact_username_hint">Username</string>
 
 </resources>

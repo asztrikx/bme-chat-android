@@ -41,6 +41,7 @@ class MessagesAdapter(val context: Context): RecyclerView.Adapter<MessagesAdapte
 		}
 		holder.binding.textView.background = ContextCompat.getDrawable(context, resourceId)
 		holder.binding.textView.text = message.content
+		// Messages send by us should be on the left side
 		holder.binding.root.layoutDirection = when (getItemViewType(position)) {
 			0 -> View.LAYOUT_DIRECTION_LTR
 			1 -> View.LAYOUT_DIRECTION_RTL

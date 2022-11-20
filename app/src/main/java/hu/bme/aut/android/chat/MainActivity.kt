@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Preferences only available from activity
         SessionProvider.injectPreferences(getPreferences(MODE_PRIVATE))
         SessionProvider.listeners.add(::onSessionChange)
     }
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Menu should only be visible with a session
         if (SessionProvider.session != null) {
             menuInflater.inflate(R.menu.menu_action, menu)
         }
@@ -56,7 +58,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Shows dialog fragment for adding contact
+     */
     private fun showAddContact() {
-        AddContactDialog({}, binding.root, ::getString).show(supportFragmentManager, AddContactDialog.TAG)
+        AddContactDialog(binding.root, ::getString).show(supportFragmentManager, AddContactDialog.TAG)
     }
 }

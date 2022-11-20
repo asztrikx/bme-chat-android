@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddContactDialog(
-	private val onAdd: () -> Unit,
 	private val parentView: View,
 	private val parentGetString: (Int) -> String
 ) : DialogFragment() {
@@ -28,12 +27,12 @@ class AddContactDialog(
 		binding = DialogAddContactBinding.inflate(layoutInflater)
 
 		return AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
-			.setTitle("Username of new contact")
+			.setTitle(getString(R.string.newContactTitle))
 			.setView(binding.root)
-			.setPositiveButton("Add") { dialogInterface, i ->
+			.setPositiveButton(getString(R.string.newContactAdd)) { dialogInterface, i ->
 				addContact()
 			}
-			.setNegativeButton("Cancel", null)
+			.setNegativeButton(getString(R.string.newContactCancel), null)
 			.create()
 	}
 
@@ -49,12 +48,8 @@ class AddContactDialog(
 			}
 			val error = contactPostResponse.error
 
-			val text = error ?: "User added to contacts" // TODO use strings.xml even for errors
+			val text = error ?: getString(R.string.newContactSuccess)
 			Snackbar.make(parentView, text, Snackbar.LENGTH_SHORT).show()
-
-			if (error == null) {
-				onAdd()
-			}
 		}
 	}
 }

@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 class MessagesFragment : Fragment() {
+	// Bundle communication keys
 	companion object {
 		const val CONTACT_ID = "contactId"
 	}
@@ -42,12 +43,12 @@ class MessagesFragment : Fragment() {
 
 	override fun onStart() {
 		super.onStart()
-		WebsocketManager.messageListeners.add(::onNewMessage)
+		WebsocketManager.messageListeners.add(::receiveNewMessage)
 	}
 
 	override fun onStop() {
 		super.onStop()
-		WebsocketManager.messageListeners.remove(::onNewMessage)
+		WebsocketManager.messageListeners.remove(::receiveNewMessage)
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,14 +56,19 @@ class MessagesFragment : Fragment() {
 
 		adapter = MessagesAdapter(requireContext())
 		binding.messages.layoutManager = LinearLayoutManager(binding.root.context).apply {
+			// New messages should appear at the bottom
 			stackFromEnd = true
 		}
 		binding.messages.adapter = adapter
 		binding.imageButton.setOnClickListener { sendMessage() }
 
+		// We only get new messages from websocket, older messages have to be loaded
 		reloadMessages()
 	}
 
+	/**
+	 * Load all messages
+	 */
 	private fun reloadMessages() {
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
@@ -74,11 +80,19 @@ class MessagesFragment : Fragment() {
 		}
 	}
 
-	private fun onNewMessage(message: Message) {
+	private fun receiveNewMessage(message: Message) {
 		activity?.runOnUiThread {
+			// RecyclerView doesn't scroll to the bottom if new item is inserted.
+			// Only scroll to the new bottom if user was already at the bottom.
+			val scrollHeight = binding.messages.computeVerticalScrollRange() - binding.messages.computeVerticalScrollExtent()
+			val scrollPosition = binding.messages.computeVerticalScrollOffset()
+
 			adapter.messages.add(message)
 			adapter.notifyItemInserted(adapter.messages.size - 1)
-			if (binding.messages.computeVerticalScrollRange() - binding.messages.computeVerticalScrollExtent() == binding.messages.computeVerticalScrollOffset()) {
+
+			// Calculate height before items are added
+			// Scroll after items are added
+			if (scrollHeight == scrollPosition) {
 				binding.messages.smoothScrollToPosition(adapter.messages.size - 1)
 			}
 		}
@@ -86,10 +100,19 @@ class MessagesFragment : Fragment() {
 
 	private fun sendMessage() {
 		val messageContent = binding.editTextMessage.text.toString()
-		binding.editTextMessage.setText("")
-		WebsocketManager.send(NewMessage(
+
+		val success = WebsocketManager.sendNewMessage(NewMessage(
 			contactId,
 			messageContent
 		))
+
+		if (!success) {
+			context?.let {
+				handleNetworkError(binding.root, it::getString)
+			}
+		} else {
+			// Only clear text if sending was successful
+			binding.editTextMessage.setText("")
+		}
 	}
 }

@@ -3,12 +3,13 @@ package hu.bme.aut.android.chat.contacts
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import hu.bme.aut.android.chat.R
 import hu.bme.aut.android.chat.databinding.ItemContactBinding
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class ContactsAdapter(val onClickListener: (Int) -> Unit): RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>() {
+class ContactsAdapter(val onClickListener: (Int) -> Unit, val getString: (Int) -> String): RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>() {
 	var contactBriefs = mutableListOf<ContactBrief>()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsViewHolder {
@@ -41,9 +42,9 @@ class ContactsAdapter(val onClickListener: (Int) -> Unit): RecyclerView.Adapter<
 			DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
 		)
 		val dateFormatPattern = if (Duration.between(date, LocalDateTime.now()).toDays() >= 1) {
-			"yy/MM/dd"
+			getString(R.string.dateFormat)
 		} else {
-			"HH:mm"
+			getString(R.string.hourFormat)
 		}
 		return date.format(DateTimeFormatter.ofPattern(dateFormatPattern))
 	}
