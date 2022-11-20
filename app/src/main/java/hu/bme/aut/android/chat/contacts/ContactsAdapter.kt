@@ -8,6 +8,7 @@ import hu.bme.aut.android.chat.databinding.ItemContactBinding
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ContactsAdapter(val onClickListener: (Int) -> Unit, val getString: (Int) -> String): RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>() {
 	var contactBriefs = mutableListOf<ContactBrief>()
@@ -24,6 +25,7 @@ class ContactsAdapter(val onClickListener: (Int) -> Unit, val getString: (Int) -
 			.split(" ").take(2)
 			.map{ it[0] }
 			.joinToString("")
+			.uppercase(Locale.getDefault())
 		holder.binding.fullName.text = contact.name
 		holder.binding.lastMessageText.text = contact.lastMessageContent
 		holder.binding.root.setOnClickListener {
