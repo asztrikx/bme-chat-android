@@ -16,21 +16,21 @@ import retrofit2.http.Path
  * Describes the available endpoints
  */
 interface Api {
-	@POST("${NetworkManager.API_PATH}/login")
-	suspend fun login(@Body loginRequest: LoginRequest): Session?
+	@POST("${RestManager.API_PATH}/login")
+	suspend fun login(@Body loginRequest: LoginRequest): Session
 
-	@POST("${NetworkManager.API_PATH}/register")
-	suspend fun register(@Body registerRequest: RegisterRequest): RegisterResponse?
+	@POST("${RestManager.API_PATH}/register")
+	suspend fun register(@Body registerRequest: RegisterRequest): RegisterResponse
 
-	@POST("${NetworkManager.API_PATH}/logout")
-	suspend fun logout(): String?
+	@POST("${RestManager.API_PATH}/logout")
+	suspend fun logout(): String
 
-	@GET("${NetworkManager.API_PATH}/contact")
-	suspend fun contacts(): List<ContactBrief>?
+	@GET("${RestManager.API_PATH}/contact")
+	suspend fun contacts(): List<ContactBrief>
 
-	@GET("${NetworkManager.API_PATH}/message/{contactId}")
-	suspend fun messages(@Path("contactId") id: Int): List<Message>?
+	@GET("${RestManager.API_PATH}/message/{contactId}")
+	suspend fun messages(@Path("contactId") id: Int): List<Message>
 
-	@POST("${NetworkManager.API_PATH}/contact")
-	suspend fun addContact(@Body username: String): ContactPostResponse?
+	@POST("${RestManager.API_PATH}/contact")
+	suspend fun addContact(@Body username: String): ContactPostResponse
 }

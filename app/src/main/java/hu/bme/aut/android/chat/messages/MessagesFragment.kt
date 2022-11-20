@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.chat.databinding.FragmentMessagesBinding
-import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.network.rest.RestManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.network.socket.WebsocketManager
 import kotlinx.coroutines.CoroutineScope
@@ -72,7 +72,7 @@ class MessagesFragment : Fragment() {
 	private fun reloadMessages() {
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
-				adapter.messages = NetworkManager.messages(contactId)
+				adapter.messages = RestManager.messages(contactId)
 				adapter.notifyDataSetChanged()
 			} catch (e: Exception) {
 				handleNetworkError(binding.root, ::getString)
@@ -82,6 +82,10 @@ class MessagesFragment : Fragment() {
 
 	private fun receiveNewMessage(message: Message) {
 		activity?.runOnUiThread {
+			if (message.contactId != contactId) {
+				return@runOnUiThread
+			}
+
 			// RecyclerView doesn't scroll to the bottom if new item is inserted.
 			// Only scroll to the new bottom if user was already at the bottom.
 			val scrollHeight = binding.messages.computeVerticalScrollRange() - binding.messages.computeVerticalScrollExtent()

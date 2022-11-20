@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.chat.R
 import hu.bme.aut.android.chat.databinding.FragmentContactsBinding
 import androidx.navigation.fragment.findNavController
-import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.messages.Message
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.messages.MessagesFragment
+import hu.bme.aut.android.chat.network.rest.RestManager
 import hu.bme.aut.android.chat.network.socket.WebsocketManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,12 +43,14 @@ class ContactsFragment : Fragment() {
 
 	override fun onStart() {
 		super.onStart()
-		WebsocketManager.contactBriefListeners.add(::receiveNewContact)
+		WebsocketManager.contactBriefListeners.add(::receiveContactBrief)
+		WebsocketManager.messageListeners.add(::receiveNewMessage)
 	}
 
 	override fun onStop() {
 		super.onStop()
-		WebsocketManager.contactBriefListeners.remove(::receiveNewContact)
+		WebsocketManager.contactBriefListeners.remove(::receiveContactBrief)
+		WebsocketManager.messageListeners.remove(::receiveNewMessage)
 	}
 
 	/**
@@ -56,7 +59,7 @@ class ContactsFragment : Fragment() {
 	private fun reloadContacts() {
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
-				adapter.contactBriefs = NetworkManager.contacts()
+				adapter.contactBriefs = RestManager.contacts()
 				adapter.notifyDataSetChanged()
 			} catch (e: Exception) {
 				context?.let {
@@ -66,10 +69,23 @@ class ContactsFragment : Fragment() {
 		}
 	}
 
-	private fun receiveNewContact(contactBrief: ContactBrief) {
+	private fun receiveContactBrief(contactBrief: ContactBrief) {
 		activity?.runOnUiThread {
 			adapter.contactBriefs.add(contactBrief)
 			adapter.notifyItemInserted(adapter.contactBriefs.size - 1)
+		}
+	}
+
+	private fun receiveNewMessage(message: Message) {
+		// ContactBrief should always display latest message
+		activity?.runOnUiThread {
+			adapter.contactBriefs.find {
+				message.contactId == it.id
+			}?.let {
+				it.lastMessageContent = message.content
+				it.lastMessageDate = message.date
+				adapter.notifyItemChanged(adapter.contactBriefs.indexOf(it))
+			}
 		}
 	}
 

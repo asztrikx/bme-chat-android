@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.network.rest.NetworkManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.FragmentRegisterBinding
+import hu.bme.aut.android.chat.network.rest.RestManager
 import hu.bme.aut.android.chat.validator.allValid
 import hu.bme.aut.android.chat.validator.validateEmpty
 import kotlinx.coroutines.CoroutineScope
@@ -59,7 +59,7 @@ class RegisterFragment : Fragment() {
 		}
 
 		val errorMessage = try {
-			NetworkManager.register(username, password, name)
+			RestManager.register(username, password, name)
 		} catch (e: Exception) {
 			handleNetworkError(binding.root, ::getString)
 			return

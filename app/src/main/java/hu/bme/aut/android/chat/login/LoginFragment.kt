@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.network.rest.NetworkManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.FragmentLoginBinding
+import hu.bme.aut.android.chat.network.rest.RestManager
 import hu.bme.aut.android.chat.validator.allValid
 import hu.bme.aut.android.chat.validator.validateEmpty
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
 		password!!
 
 		val successful = try {
-			NetworkManager.login(username, password)
+			RestManager.login(username, password)
 		} catch (e: Exception) {
 			handleNetworkError(binding.root, ::getString)
 			return

@@ -8,6 +8,8 @@ import androidx.navigation.findNavController
 import hu.bme.aut.android.chat.session.SessionProvider
 import hu.bme.aut.android.chat.contacts.AddContactDialog
 import hu.bme.aut.android.chat.databinding.ActivityMainBinding
+import hu.bme.aut.android.chat.network.NetworkManager
+import hu.bme.aut.android.chat.network.socket.WebsocketManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,22 +20,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Websocket must be initialized before Preferences (object init block runs after this block)
+        NetworkManager.init()
+
         // Preferences only available from activity
         SessionProvider.injectPreferences(getPreferences(MODE_PRIVATE))
-        SessionProvider.listeners.add(::onSessionChange)
     }
 
-    private fun onSessionChange() {
-        invalidateMenu()
-        if (SessionProvider.session == null) {
-            // binding.root also works
-            binding.hostFragment.findNavController().navigate(R.id.action_global_welcomeFragment)
-        }
+    override fun onStart() {
+        super.onStart()
+        SessionProvider.listeners.add(::onSessionChange)
     }
 
     override fun onStop() {
         super.onStop()
         SessionProvider.listeners.remove(::onSessionChange)
+    }
+
+    private fun onSessionChange() {
+        runOnUiThread {
+            invalidateMenu()
+            if (SessionProvider.session == null) {
+                // binding.root also works
+                binding.hostFragment.findNavController().navigate(R.id.action_global_welcomeFragment)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

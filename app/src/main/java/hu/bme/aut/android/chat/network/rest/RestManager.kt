@@ -4,6 +4,7 @@ import hu.bme.aut.android.chat.contacts.ContactBrief
 import hu.bme.aut.android.chat.contacts.ContactPostResponse
 import hu.bme.aut.android.chat.login.LoginRequest
 import hu.bme.aut.android.chat.messages.Message
+import hu.bme.aut.android.chat.network.NetworkManager
 import hu.bme.aut.android.chat.network.socket.WebsocketManager
 import hu.bme.aut.android.chat.register.RegisterRequest
 import hu.bme.aut.android.chat.session.SessionProvider
@@ -15,49 +16,31 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import kotlin.jvm.Throws
 
-
-object NetworkManager {
-	private val api: Api
-
-	private const val DOMAIN = "192.168.1.103:8080"
-	const val SERVICE_URL = "http://$DOMAIN"
+/**
+ * REST Api wrappers
+ */
+object RestManager {
 	const val API_PATH = "/api"
-
-	init {
-		// Create REST and Websocket managers from HttpClient
-		val client = OkHttpClient.Builder()
-			// Session token always has to be appended
-			.addInterceptor(SessionInterceptor())
-			.build()
-
-		WebsocketManager.start(client)
-
-		api = Retrofit.Builder()
-			.baseUrl(SERVICE_URL)
-			.client(client)
-			.addConverterFactory(GsonConverterFactory.create())
-			.build()
-			.create(Api::class.java)
-	}
-
-	/**
-	 * REST Api wrappers
-	 */
 
 	@Throws(Exception::class)
 	suspend fun login(username: String, password: String): Boolean {
 		val response = withContext(IO) {
-			api.login(LoginRequest(username, password))
+			NetworkManager.api.login(LoginRequest(username, password))
 		}
-		SessionProvider.session = response
-		return response != null
+		// Retrofit doesn't support "null" body
+		return if (response.userId != 0) {
+			SessionProvider.session = response
+			true
+		} else {
+			false
+		}
 	}
 
 	@Throws(Exception::class)
 	suspend fun register(username: String, password: String, name: String): String? {
 		val response = withContext(IO) {
-			api.register(RegisterRequest(username, password, name))
-		} ?: throw IOException()
+			NetworkManager.api.register(RegisterRequest(username, password, name))
+		}
 
 		return response.errorMessage
 	}
@@ -65,15 +48,15 @@ object NetworkManager {
 	@Throws(Exception::class)
 	suspend fun logout() {
 		withContext(IO) {
-			api.logout()
-		} ?: throw IOException()
+			NetworkManager.api.logout()
+		}
 	}
 
 	@Throws(Exception::class)
 	suspend fun contacts(): MutableList<ContactBrief> {
 		val response = withContext(IO) {
-			api.contacts()
-		} ?: throw IOException()
+			NetworkManager.api.contacts()
+		}
 
 		return response.toMutableList()
 	}
@@ -81,16 +64,16 @@ object NetworkManager {
 	@Throws(Exception::class)
 	suspend fun messages(contactId: Int): MutableList<Message> {
 		val response = withContext(IO) {
-			api.messages(contactId)
-		} ?: throw IOException()
+			NetworkManager.api.messages(contactId)
+		}
 		return response.toMutableList()
 	}
 
 	@Throws(Exception::class)
 	suspend fun addContact(username: String): ContactPostResponse {
 		val response = withContext(IO) {
-			api.addContact(username)
-		} ?: throw IOException()
+			NetworkManager.api.addContact(username)
+		}
 		return response
 	}
 }

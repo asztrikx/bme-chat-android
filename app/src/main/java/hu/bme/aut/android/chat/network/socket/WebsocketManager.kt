@@ -5,18 +5,18 @@ import com.google.gson.JsonSyntaxException
 import hu.bme.aut.android.chat.contacts.ContactBrief
 import hu.bme.aut.android.chat.messages.Message
 import hu.bme.aut.android.chat.messages.NewMessage
-import hu.bme.aut.android.chat.network.rest.NetworkManager
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
+import hu.bme.aut.android.chat.network.NetworkManager
+import hu.bme.aut.android.chat.network.rest.RestManager
+import hu.bme.aut.android.chat.session.SessionProvider
+import okhttp3.*
 import kotlin.reflect.KClass
 
 /**
  * Websocket manager
  */
 object WebsocketManager: WebSocketListener() {
-	val gson = Gson()
+	private val gson = Gson()
+	private const val URL = NetworkManager.SERVICE_URL + "/ws"
 
 	/**
 	 * Websocket message listeners
@@ -24,15 +24,27 @@ object WebsocketManager: WebSocketListener() {
 	val contactBriefListeners = mutableListOf<(ContactBrief) -> Unit>()
 	val messageListeners = mutableListOf<(Message) -> Unit>()
 
+	fun init(client: OkHttpClient) {
+		this.client = client
+		SessionProvider.listeners.add(::onSessionChange)
+	}
+
+	private fun onSessionChange() {
+		if (SessionProvider.session == null) {
+			websocket.close(1000, "")
+		} else {
+			start()
+		}
+	}
+
 	/**
 	 * Creates connection to websocket endpoint
 	 */
 	private lateinit var client: OkHttpClient
 	private lateinit var websocket: WebSocket
-	fun start(client: OkHttpClient) {
-		this.client = client
+	fun start() {
 		this.websocket = client.newWebSocket(
-			Request.Builder().url(NetworkManager.SERVICE_URL + "/ws").build(),
+			Request.Builder().url(URL).build(),
 			WebsocketManager,
 		)
 	}
@@ -51,6 +63,8 @@ object WebsocketManager: WebSocketListener() {
 	override fun onMessage(webSocket: WebSocket, text: String) {
 		try {
 			val contactBrief = gson.fromJson(text, ContactBrief::class.java)
+			// Gson doesn't support strict parsing
+			if (contactBrief.id == 0) throw JsonSyntaxException("")
 			contactBriefListeners.forEach {
 				it(contactBrief)
 			}
@@ -58,6 +72,8 @@ object WebsocketManager: WebSocketListener() {
 
 		try {
 			val message = gson.fromJson(text, Message::class.java)
+			// Gson doesn't support strict parsing
+			if (message.fromUserId == 0) throw JsonSyntaxException("")
 			messageListeners.forEach {
 				it(message)
 			}
@@ -69,6 +85,8 @@ object WebsocketManager: WebSocketListener() {
 	 */
 	override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
 		webSocket.close(1000, null)
-		start(client)
+		if (SessionProvider.session != null) {
+			start()
+		}
 	}
 }

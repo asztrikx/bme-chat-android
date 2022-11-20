@@ -2,7 +2,7 @@ package hu.bme.aut.android.chat.session
 
 import android.content.SharedPreferences
 import android.view.View
-import hu.bme.aut.android.chat.network.rest.NetworkManager
+import hu.bme.aut.android.chat.network.rest.RestManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,14 +39,17 @@ object SessionProvider {
 	/**
 	 * Removes session.
 	 */
-	fun logout(parentView: View, parentGetString: (Int) -> String) {
+	fun logout(parentView: View?, parentGetString: ((Int) -> String)?) {
 		CoroutineScope(Dispatchers.Main).launch {
 			try {
-				NetworkManager.logout()
+				RestManager.logout()
 				session = null
 			} catch (e: Exception) {
-				println(e)
-				handleNetworkError(parentView, parentGetString)
+				parentView?.let {
+					parentGetString?.let {
+						handleNetworkError(parentView, parentGetString)
+					}
+				}
 				return@launch
 			}
 		}

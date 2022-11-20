@@ -7,9 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat.R
-import hu.bme.aut.android.chat.network.rest.NetworkManager
 import hu.bme.aut.android.chat.network.rest.handleNetworkError
 import hu.bme.aut.android.chat.databinding.DialogAddContactBinding
+import hu.bme.aut.android.chat.network.rest.RestManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,12 +27,12 @@ class AddContactDialog(
 		binding = DialogAddContactBinding.inflate(layoutInflater)
 
 		return AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
-			.setTitle(getString(R.string.newContactTitle))
+			.setTitle(parentGetString(R.string.newContactTitle))
 			.setView(binding.root)
-			.setPositiveButton(getString(R.string.newContactAdd)) { dialogInterface, i ->
+			.setPositiveButton(parentGetString(R.string.newContactAdd)) { dialogInterface, i ->
 				addContact()
 			}
-			.setNegativeButton(getString(R.string.newContactCancel), null)
+			.setNegativeButton(parentGetString(R.string.newContactCancel), null)
 			.create()
 	}
 
@@ -41,14 +41,14 @@ class AddContactDialog(
 
 		CoroutineScope(Dispatchers.Main).launch {
 			val contactPostResponse = try {
-				NetworkManager.addContact(username)
+				RestManager.addContact(username)
 			} catch (e: Exception) {
 				handleNetworkError(parentView, parentGetString)
 				return@launch
 			}
 			val error = contactPostResponse.error
 
-			val text = error ?: getString(R.string.newContactSuccess)
+			val text = error ?: parentGetString(R.string.newContactSuccess)
 			Snackbar.make(parentView, text, Snackbar.LENGTH_SHORT).show()
 		}
 	}

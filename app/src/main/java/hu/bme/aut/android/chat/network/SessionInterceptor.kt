@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat.network.rest
+package hu.bme.aut.android.chat.network
 
 import hu.bme.aut.android.chat.session.SessionProvider
 import okhttp3.Interceptor
