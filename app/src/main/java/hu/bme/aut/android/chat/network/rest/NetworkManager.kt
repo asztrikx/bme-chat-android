@@ -41,7 +41,7 @@ object NetworkManager {
 	}
 
 	/**
-	 * Api wrappers
+	 * REST Api wrappers
 	 */
 
 	@Throws(Exception::class)
@@ -60,6 +60,13 @@ object NetworkManager {
 		} ?: throw IOException()
 
 		return response.errorMessage
+	}
+
+	@Throws(Exception::class)
+	suspend fun logout() {
+		withContext(IO) {
+			api.logout()
+		} ?: throw IOException()
 	}
 
 	@Throws(Exception::class)

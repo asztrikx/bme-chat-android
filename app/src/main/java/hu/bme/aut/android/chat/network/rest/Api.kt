@@ -22,6 +22,9 @@ interface Api {
 	@POST("${NetworkManager.API_PATH}/register")
 	suspend fun register(@Body registerRequest: RegisterRequest): RegisterResponse?
 
+	@POST("${NetworkManager.API_PATH}/logout")
+	suspend fun logout(): String?
+
 	@GET("${NetworkManager.API_PATH}/contact")
 	suspend fun contacts(): List<ContactBrief>?
 
